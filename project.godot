@@ -11,7 +11,7 @@ config_version=4
 [application]
 
 config/name="Extrimoties"
-run/main_scene="res://src/test.tscn"
+run/main_scene="res://src/Level/TestLevel.tscn"
 config/icon="res://icon.png"
 
 [input]
