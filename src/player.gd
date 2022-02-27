@@ -14,8 +14,10 @@ func _ready():
 
 func get_input_direction() -> Vector2:
 	return Vector2(
-		int(Input.is_action_just_pressed("ui_right")) - int(Input.is_action_just_pressed("ui_left")),
-		int(Input.is_action_just_pressed("ui_down")) - int(Input.is_action_just_pressed("ui_up"))
+		int(Input.is_action_just_pressed("ui_right"))
+		- int(Input.is_action_just_pressed("ui_left")),
+		int(Input.is_action_just_pressed("ui_down"))
+		- int(Input.is_action_just_pressed("ui_up"))
 	)
 
 
