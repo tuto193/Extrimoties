@@ -8,6 +8,22 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "TileMap",
+"class": "Grid",
+"language": "GDScript",
+"path": "res://src/Level/grid.gd"
+}, {
+"base": "StaticBody2D",
+"class": "Player",
+"language": "GDScript",
+"path": "res://src/Dudes/player.gd"
+} ]
+_global_script_class_icons={
+"Grid": "",
+"Player": ""
+}
+
 [application]
 
 config/name="Extrimoties"
