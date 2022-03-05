@@ -13,23 +13,23 @@ func get_cell_content(coordinates):
 		if world_to_map(node.position) == coordinates:
 			return(node)
 
-func try_move_to(dude, direction):
-	var cell_start = world_to_map(dude.position)
+func try_move_towards(piece, direction):
+	var cell_start = world_to_map(piece.position)
 	var cell_target = cell_start + direction
 
 	var cell_target_type = get_cellv(cell_target)
 	match cell_target_type:
 		EMPTY:
-			return update_pawn_position(pawn, cell_start, cell_target)
+			return update_piece_position(piece, cell_start, cell_target)
 		OBJECT:
-			var object_pawn = get_cell_content(cell_target)
-			object_pawn.queue_free()
-			return update_pawn_position(pawn, cell_start, cell_target)
+			var object_piece = get_cell_dude(cell_target)
+			object_piece.queue_free()
+			return update_piece_position(piece, cell_start, cell_target)
 		ACTOR:
-			var pawn_name = get_cell_pawn(cell_target).name
-			print("Cell %s contains %s" % [cell_target, pawn_name])
+			var piece_name = get_cell_piece(cell_target).name
+			print("Cell %s contains %s" % [cell_target, piece_name])
 
-func update_pawn_position(pawn, cell_start, cell_target):
-	set_cellv(cell_target, pawn.type)
+func update_piece_position(piece, cell_start, cell_target):
+	set_cellv(cell_target, piece.type)
 	set_cellv(cell_start, EMPTY)
 	return map_to_world(cell_target) + cell_size / 2
