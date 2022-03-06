@@ -2,6 +2,10 @@ extends StaticBody2D
 
 class_name Player
 
+onready var grid: Grid = get_parent()
+
+var type = GridTraits.CELL_TYPE.LIFE
+
 # sprite is 32x32, scaled to 0.5 on both axes
 var dimensions: Vector2 = Vector2(64, 64) * self.scale
 # Declare member variables here. Examples:
