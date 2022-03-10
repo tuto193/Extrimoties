@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "StaticBody2D",
+"class": "Box",
+"language": "GDScript",
+"path": "res://src/Blocks/box.gd"
+}, {
 "base": "TileMap",
 "class": "Grid",
 "language": "GDScript",
@@ -23,11 +28,18 @@ _global_script_classes=[ {
 "class": "Player",
 "language": "GDScript",
 "path": "res://src/Dudes/player.gd"
+}, {
+"base": "StaticBody2D",
+"class": "Wall",
+"language": "GDScript",
+"path": "res://src/Blocks/wall.gd"
 } ]
 _global_script_class_icons={
+"Box": "",
 "Grid": "",
 "GridTraits": "",
-"Player": ""
+"Player": "",
+"Wall": ""
 }
 
 [application]
