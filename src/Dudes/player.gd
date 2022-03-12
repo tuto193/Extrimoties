@@ -1,8 +1,7 @@
-extends StaticBody2D
+extends GridPiece
 
 class_name Player
 
-onready var grid: Grid = get_parent()
 
 # To differentiate from others in grid
 var type = GridTraits.CELL_TYPE.LIFE

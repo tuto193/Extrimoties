@@ -19,12 +19,17 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/Level/grid.gd"
 }, {
+"base": "StaticBody2D",
+"class": "GridPiece",
+"language": "GDScript",
+"path": "res://src/Share/grid_piece.gd"
+}, {
 "base": "Reference",
 "class": "GridTraits",
 "language": "GDScript",
 "path": "res://src/Share/grid_traits.gd"
 }, {
-"base": "StaticBody2D",
+"base": "GridPiece",
 "class": "Player",
 "language": "GDScript",
 "path": "res://src/Dudes/player.gd"
@@ -37,6 +42,7 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "Box": "",
 "Grid": "",
+"GridPiece": "",
 "GridTraits": "",
 "Player": "",
 "Wall": ""

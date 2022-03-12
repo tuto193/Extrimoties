@@ -38,7 +38,7 @@ func can_move_towards(piece, direction) -> bool:
 			return true
 
 
-func try_move_towards(piece, direction):
+func try_move_towards(piece: Node, direction: Vector2):
 	var cell_start = world_to_map(piece.position)
 	var cell_target = cell_start + direction
 
