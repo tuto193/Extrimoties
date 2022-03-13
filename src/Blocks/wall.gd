@@ -1,4 +1,4 @@
-extends StaticBody2D
+extends GridPiece
 
 class_name Wall
 

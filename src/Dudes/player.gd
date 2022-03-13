@@ -30,10 +30,11 @@ func get_input_direction() -> Vector2:
 	)
 
 
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(_delta) -> void:
 	var direction_vector: Vector2 = get_input_direction()
 	# No type hinting, since it throws errors in case of null
-	var can_new_pos = grid.try_move_towards(self, direction_vector)
-	if can_new_pos:
-		self.position = can_new_pos
+	if direction_vector.length() > 0:
+		# Not neccessary right now
+		var _new_pos: Vector2 = grid.move_piece_towards(self, direction_vector)

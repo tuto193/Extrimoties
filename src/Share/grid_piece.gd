@@ -4,5 +4,8 @@ class_name GridPiece
 
 onready var grid: Grid = get_parent()
 
-func move_to() -> void:
-    return
+
+# Basic move function:
+# TODO: expand once animations are implemented
+func move_to(new_pos: Vector2) -> void:
+	self.position = new_pos

@@ -9,7 +9,7 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "StaticBody2D",
+"base": "GridPiece",
 "class": "Box",
 "language": "GDScript",
 "path": "res://src/Blocks/box.gd"
@@ -34,7 +34,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/Dudes/player.gd"
 }, {
-"base": "StaticBody2D",
+"base": "GridPiece",
 "class": "Wall",
 "language": "GDScript",
 "path": "res://src/Blocks/wall.gd"
