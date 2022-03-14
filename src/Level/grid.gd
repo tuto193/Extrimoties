@@ -27,7 +27,7 @@ func move_piece_towards(piece: StaticBody2D, direction: Vector2) -> Vector2:
 			# Commented out, since we want to move objects, not destroy them
 			if piece.type == GridTraits.CELL_TYPE.BOX:
 				print("Cell %s already contains a box. Cannot push" %(cell_map_target))
-				return cell_map_start
+				return piece.position
 			var object_world_start: Vector2 = object_piece.position
 			var object_new_pos: Vector2 = move_piece_towards(
 				object_piece,

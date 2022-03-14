@@ -43,7 +43,10 @@ tile_data = PoolIntArray( 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 
 script = ExtResource( 2 )
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
-position = Vector2( 352, 224 )
+position = Vector2( 415, 224 )
 
 [node name="Box" parent="." instance=ExtResource( 4 )]
-position = Vector2( 351, 288 )
+position = Vector2( 287, 224 )
+
+[node name="Box2" parent="." instance=ExtResource( 4 )]
+position = Vector2( 351, 224 )
