@@ -31,7 +31,7 @@ func move_piece_towards(piece: StaticBody2D, direction: Vector2) -> Vector2:
 			var object_world_start: Vector2 = object_piece.position
 			var object_new_pos: Vector2 = move_piece_towards(
 				object_piece,
-				map_to_world(cell_map_target + direction)
+				direction
 			)
 			if object_world_start == object_new_pos:
 				return piece.position # didn't move
