@@ -1,6 +1,6 @@
 extends GridPiece
 
-class_name Player
+class_name Eye
 
 
 # To differentiate from others in grid
@@ -17,8 +17,8 @@ var dimensions: Vector2 = Vector2(64, 64) * self.scale
 
 
 # Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+# func _ready():
+# 	pass # Replace with function body.
 
 
 func get_input_direction() -> Vector2:

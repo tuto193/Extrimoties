@@ -14,6 +14,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/Blocks/box.gd"
 }, {
+"base": "GridPiece",
+"class": "Eye",
+"language": "GDScript",
+"path": "res://src/Dudes/eye.gd"
+}, {
 "base": "TileMap",
 "class": "Grid",
 "language": "GDScript",
@@ -30,21 +35,16 @@ _global_script_classes=[ {
 "path": "res://src/Share/grid_traits.gd"
 }, {
 "base": "GridPiece",
-"class": "Player",
-"language": "GDScript",
-"path": "res://src/Dudes/player.gd"
-}, {
-"base": "GridPiece",
 "class": "Wall",
 "language": "GDScript",
 "path": "res://src/Blocks/wall.gd"
 } ]
 _global_script_class_icons={
 "Box": "",
+"Eye": "",
 "Grid": "",
 "GridPiece": "",
 "GridTraits": "",
-"Player": "",
 "Wall": ""
 }
 
