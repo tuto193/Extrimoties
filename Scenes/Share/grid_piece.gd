@@ -1,6 +1,5 @@
-extends StaticBody2D
-
 class_name GridPiece
+extends StaticBody2D
 
 onready var grid: Grid = get_parent()
 

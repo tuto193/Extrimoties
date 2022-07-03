@@ -12,32 +12,32 @@ _global_script_classes=[ {
 "base": "GridPiece",
 "class": "Box",
 "language": "GDScript",
-"path": "res://src/Blocks/box.gd"
+"path": "res://Scenes/Blocks/box.gd"
 }, {
 "base": "GridPiece",
 "class": "Eye",
 "language": "GDScript",
-"path": "res://src/Dudes/eye.gd"
+"path": "res://Scenes/Dudes/eye.gd"
 }, {
 "base": "TileMap",
 "class": "Grid",
 "language": "GDScript",
-"path": "res://src/Level/grid.gd"
+"path": "res://Scenes/Level/grid.gd"
 }, {
 "base": "StaticBody2D",
 "class": "GridPiece",
 "language": "GDScript",
-"path": "res://src/Share/grid_piece.gd"
+"path": "res://Scenes/Share/grid_piece.gd"
 }, {
 "base": "Reference",
 "class": "GridTraits",
 "language": "GDScript",
-"path": "res://src/Share/grid_traits.gd"
+"path": "res://Scenes/Share/grid_traits.gd"
 }, {
 "base": "GridPiece",
 "class": "Wall",
 "language": "GDScript",
-"path": "res://src/Blocks/wall.gd"
+"path": "res://Scenes/Blocks/wall.gd"
 } ]
 _global_script_class_icons={
 "Box": "",
@@ -51,7 +51,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Extrimoties"
-run/main_scene="res://src/Level/TestTilemappedLevel.tscn"
+run/main_scene="res://Scenes/Level/TestTilemappedLevel.tscn"
 config/icon="res://icon.png"
 
 [input]
