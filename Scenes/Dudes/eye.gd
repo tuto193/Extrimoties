@@ -56,7 +56,6 @@ func update_state(input_dir: Vector2) -> void:
 		new_direction = [FaceDir.UP, FaceDir.DOWN][
 			int((input_dir.y + 1) / 2)
 		]
-	print("update_state(): current_state = %s" %FaceDir.keys()[current_state])
 	var old_state = current_state
 	match current_state:
 		FaceDir.TOP:
@@ -64,28 +63,24 @@ func update_state(input_dir: Vector2) -> void:
 		##################################
 		# Parallel movements
 		FaceDir.UP:
-			print("update_state(): here...")
 			match new_direction:
 				FaceDir.UP:
 					self.current_state = FaceDir.BOTTOM
 				FaceDir.DOWN:
 					self.current_state = FaceDir.TOP
 		FaceDir.DOWN:
-			print("update_state(): here...")
 			match new_direction:
 				FaceDir.UP:
 					self.current_state = FaceDir.TOP
 				FaceDir.DOWN:
 					self.current_state = FaceDir.BOTTOM
 		FaceDir.RIGHT:
-			print("update_state(): here...")
 			match new_direction:
 				FaceDir.RIGHT:
 					self.current_state = FaceDir.BOTTOM
 				FaceDir.LEFT:
 					self.current_state = FaceDir.TOP
 		FaceDir.LEFT:
-			print("update_state(): here...")
 			match new_direction:
 				FaceDir.RIGHT:
 					self.current_state = FaceDir.TOP
@@ -102,30 +97,10 @@ func update_state(input_dir: Vector2) -> void:
 					self.current_state = FaceDir.LEFT
 				FaceDir.LEFT:
 					self.current_state = FaceDir.RIGHT
-		# handle perpendicular movements
-		FaceDir.UP, FaceDir.DOWN:
-			match new_direction:
-				FaceDir.LEFT, FaceDir.RIGHT:
-					# do nothing
-					print("update_state(): Perpendicular movement (horizontal)")
-				_:  # not perpendicular
-					print("update_state(): Parallel movement continue to..")
-					continue
-		FaceDir.LEFT, FaceDir.RIGHT:
-			match new_direction:
-				FaceDir.UP, FaceDir.DOWN:
-					# do nothing
-					print("update_state(): Perpendicular movement (vertical)")
-				_:  # not perpendicular
-					print("update_state(): Parallel movement continue to..")
-					continue
-
 	_update_animation(old_state)
 
 
 func _update_animation(_old_state) -> void:
-	print("_update_animation(): Updating animation from %s" %FaceDir.keys()[_old_state])
-	print("_update_animation(): Current state is %s" %FaceDir.keys()[current_state])
 	animated_sprite.animation = FaceDir.keys()[current_state].to_lower()
 	# animated_sprite.stop()
 
@@ -139,5 +114,4 @@ func _physics_process(_delta) -> void:
 		var old_pos = position
 		var new_pos: Vector2 = grid.move_piece_towards(self, direction_vector)
 		if old_pos != new_pos:
-			print("_physics_process(): Updating state to %s" %direction_vector)
 			update_state(direction_vector)
