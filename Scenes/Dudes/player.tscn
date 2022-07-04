@@ -61,4 +61,3 @@ shape = SubResource( 1 )
 scale = Vector2( 4, 4 )
 frames = SubResource( 2 )
 animation = "top"
-playing = true

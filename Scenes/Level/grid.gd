@@ -21,12 +21,13 @@ func move_piece_towards(piece: StaticBody2D, direction: Vector2) -> Vector2:
 
 	var cell_map_target_type = get_cellv(cell_map_target)
 	match cell_map_target_type:
-		GridTraits.CELL_TYPE.BOX:
+		GridTraits.CellType.BOX:
 			var object_piece: StaticBody2D= get_cell_content(cell_map_target)
 			# Commented out, since we want to move objects, not destroy them
-			if piece.type == GridTraits.CELL_TYPE.BOX:
+			if piece.type == GridTraits.CellType.BOX:
 				print("Cell %s already contains a box. Cannot push" %(cell_map_target))
 				return piece.position
+			# Not a box
 			var object_world_start: Vector2 = object_piece.position
 			var object_new_pos: Vector2 = move_piece_towards(
 				object_piece,
@@ -43,7 +44,7 @@ func move_piece_towards(piece: StaticBody2D, direction: Vector2) -> Vector2:
 			)
 			piece.move_to(new_pos)
 			return new_pos
-		GridTraits.CELL_TYPE.WALL:
+		GridTraits.CellType.WALL:
 			print("Cell %s contains a wall" %(cell_map_target))
 			return piece.position # didn't move the piece. Return origin
 		_: # Can move to new position
@@ -57,5 +58,5 @@ func move_piece_towards(piece: StaticBody2D, direction: Vector2) -> Vector2:
 
 func update_grid_positions(piece, cell_map_start, cell_map_target) -> Vector2:
 	set_cellv(cell_map_target, piece.type)
-	set_cellv(cell_map_start, GridTraits.CELL_TYPE.EMPTY)
+	set_cellv(cell_map_start, GridTraits.CellType.EMPTY)
 	return map_to_world(cell_map_target) + cell_size / 2

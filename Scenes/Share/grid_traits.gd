@@ -1,6 +1,6 @@
 class_name GridTraits
 
-enum CELL_TYPE {
+enum CellType {
 	EMPTY = -1,
 	WALL,
 	BOX,

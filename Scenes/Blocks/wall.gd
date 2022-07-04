@@ -2,4 +2,4 @@ extends GridPiece
 
 class_name Wall
 
-var type = GridTraits.CELL_TYPE.WALL
+var type = GridTraits.CellType.WALL

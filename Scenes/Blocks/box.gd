@@ -2,4 +2,4 @@ extends GridPiece
 
 class_name Box
 
-var type = GridTraits.CELL_TYPE.BOX
+var type = GridTraits.CellType.BOX
