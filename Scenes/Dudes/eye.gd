@@ -25,6 +25,8 @@ onready var current_state
 
 onready var animated_sprite: AnimatedSprite = $AnimatedSprite
 
+var _can_move: bool = true
+
 func _ready():
 	self.current_state = FaceDir.BOTTOM
 
@@ -42,6 +44,8 @@ func get_input_direction() -> Vector2:
 		- int(Input.is_action_just_pressed("ui_up"))
 	)
 	return Vector2(0, y_direction)
+
+# func _on_GridPiece_finished_moving():
 
 
 # Updates the facing direction of 'current_state' based on the 'input_dir'

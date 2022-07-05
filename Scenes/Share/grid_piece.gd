@@ -5,6 +5,8 @@ onready var grid: Grid = get_parent()
 onready var tween: Tween = $Tween
 export var time_animation: float = 0.25
 
+signal finished_moving
+
 # Basic move function:
 # TODO: expand once animations are implemented
 func move_to(new_pos: Vector2) -> void:
@@ -21,4 +23,5 @@ func move_to(new_pos: Vector2) -> void:
 	_unused = tween.start()
 	yield(tween, "tween_completed")
 	set_process(true)
+	# emit_signal("finished_moving")
 	# self.position = new_pos

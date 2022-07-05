@@ -60,4 +60,4 @@ shape = SubResource( 1 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 scale = Vector2( 4, 4 )
 frames = SubResource( 2 )
-animation = "top"
+animation = "bottom"
