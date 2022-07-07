@@ -27,8 +27,16 @@ onready var animated_sprite: AnimatedSprite = $AnimatedSprite
 
 var _can_move: bool = true
 
+func _on_GridPiece_started_moving() ->void:
+	self._can_move = false
+
+func _on_GridPiece_finished_moving() ->void:
+	self._can_move = true
+
 func _ready():
 	self.current_state = FaceDir.BOTTOM
+	var _err = self.connect("started_moving", self, "_on_GridPiece_started_moving")
+	_err = self.connect("finished_moving", self, "_on_GridPiece_finished_moving")
 
 # Returns the input direction. It can only be one of the four main ones
 # and no diagonal vectores are allowed/returned.
@@ -50,7 +58,7 @@ func get_input_direction() -> Vector2:
 
 # Updates the facing direction of 'current_state' based on the 'input_dir'
 # so it rolls like a die.
-func update_state(input_dir: Vector2) -> void:
+func _update_state(input_dir: Vector2) -> void:
 	var new_direction = FaceDir.TOP  # unvalid direction
 	if input_dir.x != 0:
 		new_direction = [FaceDir.LEFT, FaceDir.RIGHT][
@@ -113,9 +121,9 @@ func _update_animation(_old_state) -> void:
 func _physics_process(_delta) -> void:
 	var direction_vector: Vector2 = get_input_direction()
 	# No type hinting, since it throws errors in case of null
-	if direction_vector.length() > 0:
+	if direction_vector.length() > 0 and _can_move:
 		# Not neccessary right now
 		var old_pos = position
 		var new_pos: Vector2 = grid.move_piece_towards(self, direction_vector)
 		if old_pos != new_pos:
-			update_state(direction_vector)
+			_update_state(direction_vector)
