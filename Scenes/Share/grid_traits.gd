@@ -4,5 +4,5 @@ enum CellType {
 	EMPTY = -1,
 	WALL,
 	BOX,
-	LIFE
+	LIFE,
 }

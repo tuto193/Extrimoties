@@ -15,6 +15,11 @@ _global_script_classes=[ {
 "path": "res://Scenes/Blocks/box.gd"
 }, {
 "base": "GridPiece",
+"class": "Empty",
+"language": "GDScript",
+"path": "res://Scenes/Blocks/empty.gd"
+}, {
+"base": "GridPiece",
 "class": "Eye",
 "language": "GDScript",
 "path": "res://Scenes/Dudes/eye.gd"
@@ -41,6 +46,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Box": "",
+"Empty": "",
 "Eye": "",
 "Grid": "",
 "GridPiece": "",

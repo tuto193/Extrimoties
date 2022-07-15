@@ -34,7 +34,8 @@ func _on_GridPiece_finished_moving() ->void:
 	self._can_move = true
 
 func _ready():
-	self.current_state = FaceDir.BOTTOM
+	# Spicy initialization, but works
+	self.current_state = FaceDir[animated_sprite.animation.to_upper()]
 	var _err = self.connect("started_moving", self, "_on_GridPiece_started_moving")
 	_err = self.connect("finished_moving", self, "_on_GridPiece_finished_moving")
 
