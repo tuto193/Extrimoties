@@ -37,6 +37,6 @@ func move_to(new_pos: Vector2) -> void:
 # Deal with collisions when there's a hole. Returns 'true' if falls in hole
 # Landing on a hole, will make the
 # piece disappear
-func land_on_hole(_hole: GridPiece) -> bool:
+func handle_hole(_hole: GridPiece) -> bool:
 	emit_signal("fall_in_hole")
 	return true

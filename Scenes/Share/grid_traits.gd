@@ -5,4 +5,5 @@ enum CellType {
 	WALL,
 	BOX,
 	LIFE,
+	GOAL,
 }
