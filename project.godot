@@ -19,7 +19,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scenes/Dudes/eye.gd"
 }, {
-"base": "Hole",
+"base": "GridPiece",
 "class": "Goal",
 "language": "GDScript",
 "path": "res://Scenes/Blocks/goal.gd"
