@@ -10,6 +10,9 @@ use crate::grid_piece::GridPiece;
 #[register_with(Self::register_builder)]
 pub struct Grid;
 
+unsafe impl GodotObject for  Grid {
+
+}
 
 // __One__ `impl` block can have the `#[methods]` attribute, which will generate
 // code to automatically bind any exported methods to Godot.

@@ -27,7 +27,7 @@ pub struct GridPiece {
 #[methods]
 impl GridPiece {
     fn register_signals(builder: &ClassBuilder<Self>) {
-        builder.add_signal(Signal { name: "started_moving", args: &[] });
+        builder.add_signal(init::Signal { name: "started_moving", args: &[] });
         builder.add_signal(Signal { name: "finished_moving", args: &[] });
         builder.add_signal(Signal { name: "fall_in_hole", args: &[] });
         builder.add_signal(Signal { name: "goal_reached", args: &[] });
