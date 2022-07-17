@@ -1,0 +1,12 @@
+[package]
+name = "extrimoties"
+version = "0.1.0"
+authors = ["Carlos A. Parra F. <carlos.a.parra.f@gmail.com>"]
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib", "staticlib"]
+
+[dependencies]
+gdnative = "0.10.0"
+# gdnative = { path = "../../godot-rust/gdnative" }
