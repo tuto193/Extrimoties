@@ -4,13 +4,26 @@ use gdnative::prelude::*;
 
 use crate::grid::Grid;
 
+#[derive(Copy, Clone)]
 pub enum CellType {
-    Empty,
+    Empty = -1,
     Wall,
     Box,
     Life,
     Goal,
 }
+
+// impl CellType {
+//     fn to_str(self) -> String {
+//         match self {
+//             CellType::Empty => "empty".to_string(),
+//             CellType::Wall=> "wall".to_string(),
+//             CellType::Box => "box".to_string(),
+//             CellType::Life => "life".to_string(),
+//             CellType::Goal => "goal".to_string(),
+//         }
+//     }
+// }
 
 #[derive(NativeClass)]
 #[inherit(StaticBody2D)]
@@ -26,21 +39,13 @@ pub struct GridPiece {
 #[methods]
 impl GridPiece {
     fn register_signals(builder: &ClassBuilder<Self>) {
-        builder
-            .signal("started_moving")
-            .done();
-        builder
-            .signal("finished_moving")
-            .done();
-        builder
-            .signal("fall_in_hole")
-            .done();
-        builder
-            .signal("goal_reached")
-            .done();
+        builder.signal("started_moving").done();
+        builder.signal("finished_moving").done();
+        builder.signal("fall_in_hole").done();
+        builder.signal("goal_reached").done();
     }
 
-    fn new(owner: &StaticBody2D) -> Self {
+    fn new(_owner: &StaticBody2D) -> Self {
         Self {
             grid: None,
             tween: None,
@@ -50,7 +55,7 @@ impl GridPiece {
     }
 
     #[export]
-    fn _ready(&self, owner: &StaticBody2D) {
+    fn _ready(&mut self, owner: &StaticBody2D) {
         // Initialize the onready vars
         let grid = unsafe {
             owner

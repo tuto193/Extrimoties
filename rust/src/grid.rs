@@ -10,7 +10,6 @@ use crate::grid_piece::GridPiece;
 #[register_with(Self::register_builder)]
 pub struct Grid;
 
-
 #[methods]
 impl Grid {
     // Register the builder for methods, properties and/or signals.
@@ -41,14 +40,15 @@ impl Grid {
             let position = node2d.position();
             let grid_piece = node2d
                 .cast_instance::<GridPiece>()
-                .expect("Child node has to be of type 'GridPiece'").claim();
-            grid_piece
+                .expect("Child node has to be of type 'GridPiece'");
+            let cell_type = grid_piece
                 .map(|grid_piece, _owner| {
                     // TODO: fix this mapping... somehow
-                    &owner.set_cellv(owner.world_to_map(position), grid_piece.cell_type, false, false, false);
-
+                    grid_piece.cell_type
                 })
                 .expect("Failed to map over grid_piece instance");
+            // There is some output that we can simply ignore
+            let _ = &owner.set_cellv(owner.world_to_map(position), cell_type as i64, false, false, false);
             // let cell_type = grid_piece.cell_type;
         }
     }
