@@ -2,6 +2,7 @@ use gdnative::api::*;
 // use gdnative::object::ownership;
 use gdnative::prelude::*;
 
+use crate::grid_piece::CellType;
 use crate::grid_piece::GridPiece;
 
 /// The Game "class"
@@ -43,13 +44,53 @@ impl Grid {
                 .expect("Child node has to be of type 'GridPiece'");
             let cell_type = grid_piece
                 .map(|grid_piece, _owner| {
-                    // TODO: fix this mapping... somehow
                     grid_piece.cell_type
                 })
                 .expect("Failed to map over grid_piece instance");
             // There is some output that we can simply ignore
             let _ = &owner.set_cellv(owner.world_to_map(position), cell_type as i64, false, false, false);
-            // let cell_type = grid_piece.cell_type;
         }
+    }
+
+    fn get_cell_content(self, owner: &TileMap, coords: Vector2) -> Option<Instance<GridPiece>> {
+        for node in &owner.get_children() {
+            let grid_piece = unsafe {
+                node
+                    .to_object::<StaticBody2D>()
+                    .expect("All children of Grid should at least inherit `StaticBody2D")
+                    .assume_safe()
+            };
+            if owner.world_to_map(grid_piece.position()) == coords {
+                let grid_piece = grid_piece
+                    .cast_instance::<GridPiece>()
+                    .expect("All children of Grid are `GridPiece`s");
+                return Some(grid_piece.claim())
+            }
+
+        }
+        None
+    }
+
+    pub fn move_piece_towards(&self, owner: &TileMap, piece: &StaticBody2D, direction: Vector2) -> Vector2 {
+        let cell_map_start = owner.world_to_map(piece.position());
+        let cell_map_target = cell_map_start + direction;
+        let target_cell_type = CellType::from_i64(owner.get_cellv(cell_map_target));
+        let target_cell_type = match target_cell_type {
+            Ok(t) => t,
+            Err(e) => godot_error!("Error when getting enum: {:?}", e),
+        };
+        match target_cell_type {
+            CellType::Box => {
+                let target_piece = self
+                    .get_cell_content(owner, cell_map_target)
+                    .unwrap();
+                let moving_piece = piece
+                    .cast_instance::<GridPiece>();
+                return Vector2::new(0.0,0.0);
+            },
+            CellType::Empty => todo!(),
+            CellType::Wall => todo!(),
+            CellType::Life => todo!(),
+            CellType::Goal => todo!(), }
     }
 }

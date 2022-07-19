@@ -1,3 +1,5 @@
+use std::error::Error;
+
 use gdnative::api::*;
 // use gdnative::object::ownership;
 use gdnative::prelude::*;
@@ -13,17 +15,27 @@ pub enum CellType {
     Goal,
 }
 
-// impl CellType {
-//     fn to_str(self) -> String {
-//         match self {
-//             CellType::Empty => "empty".to_string(),
-//             CellType::Wall=> "wall".to_string(),
-//             CellType::Box => "box".to_string(),
-//             CellType::Life => "life".to_string(),
-//             CellType::Goal => "goal".to_string(),
-//         }
-//     }
-// }
+impl CellType {
+    pub fn from_i64(n: i64) -> Result<Self, &'static str> {
+        match n {
+            -1 => Ok(CellType::Empty),
+            0 => Ok(CellType::Wall),
+            1 => Ok(CellType::Box),
+            2 => Ok(CellType::Life),
+            3 => Ok(CellType::Goal),
+            _ => Err("Expected integer in [-1, 3]"),
+        }
+    }
+    // fn to_str(self) -> String {
+    //     match self {
+    //         CellType::Empty => "empty".to_string(),
+    //         CellType::Wall=> "wall".to_string(),
+    //         CellType::Box => "box".to_string(),
+    //         CellType::Life => "life".to_string(),
+    //         CellType::Goal => "goal".to_string(),
+    //     }
+    // }
+}
 
 #[derive(NativeClass)]
 #[inherit(StaticBody2D)]
