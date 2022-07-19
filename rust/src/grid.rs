@@ -52,7 +52,7 @@ impl Grid {
         }
     }
 
-    fn get_cell_content(self, owner: &TileMap, coords: Vector2) -> Option<Instance<GridPiece>> {
+    fn get_cell_content(&self, owner: &TileMap, coords: Vector2) -> Option<Instance<GridPiece>> {
         for node in &owner.get_children() {
             let grid_piece = unsafe {
                 node
@@ -71,22 +71,29 @@ impl Grid {
         None
     }
 
-    pub fn move_piece_towards(&self, owner: &TileMap, piece: &StaticBody2D, direction: Vector2) -> Vector2 {
-        let cell_map_start = owner.world_to_map(piece.position());
+    pub fn move_piece_towards(&self, owner: &TileMap, piece: &TInstance<GridPiece>, direction: Vector2) -> Vector2 {
+        let cell_map_start = owner.world_to_map(piece.base().position());
         let cell_map_target = cell_map_start + direction;
-        let target_cell_type = CellType::from_i64(owner.get_cellv(cell_map_target));
-        let target_cell_type = match target_cell_type {
-            Ok(t) => t,
-            Err(e) => godot_error!("Error when getting enum: {:?}", e),
-        };
+        let target_cell_type = CellType::from_i64(owner.get_cellv(cell_map_target)).unwrap();
+        // let target_cell_type = match target_cell_type {
+        //     Ok(t) => t,
+        //     Err(e) => godot_error!("Error when getting enum: {:?}", e),
+        // };
         match target_cell_type {
             CellType::Box => {
-                let target_piece = self
+                let target_piece = &self
                     .get_cell_content(owner, cell_map_target)
                     .unwrap();
-                let moving_piece = piece
-                    .cast_instance::<GridPiece>();
-                return Vector2::new(0.0,0.0);
+                let moving_piece_type = piece
+                .map(|p, o| {
+                    p.cell_type
+                })
+                .unwrap();
+                if movin_piece_type == CellType::Box {
+                    godot_print!("Cell {} already contains a box. Cannot push", cell_map_target);
+                    return piece.base().position()
+                }
+                return Vector2::new(0.0, 0.0);
             },
             CellType::Empty => todo!(),
             CellType::Wall => todo!(),
