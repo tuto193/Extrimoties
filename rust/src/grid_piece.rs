@@ -6,7 +6,7 @@ use gdnative::prelude::*;
 
 use crate::grid::Grid;
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, PartialEq)]
 pub enum CellType {
     Empty = -1,
     Wall,

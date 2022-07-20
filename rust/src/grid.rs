@@ -71,7 +71,7 @@ impl Grid {
         None
     }
 
-    pub fn move_piece_towards(&self, owner: &TileMap, piece: &TInstance<GridPiece>, direction: Vector2) -> Vector2 {
+    pub fn move_piece_towards(&self, owner: &TileMap, piece: &Instance<GridPiece>, direction: Vector2) -> Vector2 {
         let cell_map_start = owner.world_to_map(piece.base().position());
         let cell_map_target = cell_map_start + direction;
         let target_cell_type = CellType::from_i64(owner.get_cellv(cell_map_target)).unwrap();
@@ -84,15 +84,30 @@ impl Grid {
                 let target_piece = &self
                     .get_cell_content(owner, cell_map_target)
                     .unwrap();
-                let moving_piece_type = piece
-                .map(|p, o| {
-                    p.cell_type
-                })
-                .unwrap();
-                if movin_piece_type == CellType::Box {
-                    godot_print!("Cell {} already contains a box. Cannot push", cell_map_target);
-                    return piece.base().position()
+                let moving_piece_type = unsafe {
+                    piece
+                    .assume_safe()
+                    .map(|p, o| {
+                        p.cell_type
+                    })
+                    .unwrap()
+                };
+                // Boxes cannot push each other (for now?)
+                if moving_piece_type == CellType::Box {
+                    godot_print!("Cell {:?} already contains a box. Cannot push", cell_map_target);
+                    return unsafe { piece.base().assume_safe().position() };
                 }
+                let box_start_position = unsafe {
+                    target_piece
+                        .base()
+                        .assume_safe()
+                        .position()
+                };
+                let box_end_pos = self.move_piece_towards(owner, target_piece, direction);
+                    // .map(|_gp, owner| {
+                    //     owner.as_ref().position()
+                    // })
+                    // .unwrap();
                 return Vector2::new(0.0, 0.0);
             },
             CellType::Empty => todo!(),
