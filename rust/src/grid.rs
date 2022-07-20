@@ -71,6 +71,10 @@ impl Grid {
         None
     }
 
+    fn upgrade_grid_positions(self, owner: &TileMap, piece: &Instance<GridPiece>, start: Vector2, target: Vector2) -> Vector2 {
+        owner.set_cellv(target, tile, false, false, false);
+    }
+
     pub fn move_piece_towards(&self, owner: &TileMap, piece: &Instance<GridPiece>, direction: Vector2) -> Vector2 {
         let cell_map_start = owner.world_to_map(piece.base().position());
         let cell_map_target = cell_map_start + direction;
@@ -104,10 +108,7 @@ impl Grid {
                         .position()
                 };
                 let box_end_pos = self.move_piece_towards(owner, target_piece, direction);
-                    // .map(|_gp, owner| {
-                    //     owner.as_ref().position()
-                    // })
-                    // .unwrap();
+
                 return Vector2::new(0.0, 0.0);
             },
             CellType::Empty => todo!(),
