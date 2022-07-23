@@ -1,0 +1,8 @@
+[gd_resource type="NativeScript" load_steps=2 format=2]
+
+[ext_resource path="res://native/extrimoties.gdnlib" type="GDNativeLibrary" id=1]
+
+[resource]
+resource_name = "GridPiece"
+class_name = "GridPiece"
+library = ExtResource( 1 )
