@@ -112,7 +112,7 @@ impl GridPiece {
     }
 
     #[export]
-    fn _ready(&mut self, owner: &StaticBody2D) {
+    fn _ready(&mut self, owner: TRef<StaticBody2D>) {
         // Initialize the onready vars
         let grid = unsafe {
             owner
@@ -133,6 +133,7 @@ impl GridPiece {
         let tween = tween
             .cast::<Tween>()
             .expect("Child must be of type 'Tween'");
+        tween.connect("tween_completed", owner, "on_tween_tween_completed", VariantArray::new_shared(), 0);
         self.tween = Some(tween.claim());
     }
 
@@ -150,5 +151,16 @@ impl GridPiece {
             i64::from(EaseType::OUT),
             0.0,
         );
+        let _ = t.start();
+    }
+
+    fn on_tween_tween_completed(&self, owner: TRef<StaticBody2D>) {
+        owner.set_process(true);
+        owner.emit_signal("finished_moving", &[]);
+    }
+
+    fn handle_hole(&self, owner: TRef<StaticBody2D>, _hole: TInstance<GridPiece>) -> bool {
+        owner.emit_signal("fall_in_hole", &[]);
+        return true;
     }
 }
