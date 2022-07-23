@@ -1,7 +1,7 @@
-use std::error::Error;
-
 use gdnative::api::tween::{EaseType, TransitionType};
 use gdnative::api::*;
+use gdnative::export::Export;
+use gdnative::export::hint::{EnumHint, IntHint};
 // use gdnative::object::ownership;
 use gdnative::prelude::*;
 
@@ -36,6 +36,50 @@ impl CellType {
     //         CellType::Goal => "goal".to_string(),
     //     }
     // }
+}
+
+impl FromVariant for CellType {
+    fn from_variant(variant: &Variant) -> Result<Self, FromVariantError> {
+        let result = i64::from_variant(variant)?;
+        match result {
+            -1 => Ok(CellType::Empty),
+            0 => Ok(CellType::Wall),
+            1 => Ok(CellType::Box),
+            2 => Ok(CellType::Life),
+            3 => Ok(CellType::Goal),
+            _ => Err(FromVariantError::UnknownEnumVariant {
+                variant: "i64".to_owned(),
+                expected: &["-1", "0", "1", "2", "3"],
+             }),
+        }
+    }
+}
+
+impl Export for CellType {
+    type Hint = IntHint<u32>;
+
+    fn export_info(_hint: Option<Self::Hint>) -> ExportInfo {
+        Self::Hint::Enum(EnumHint::new(vec![
+            "Empty".to_owned(),
+            "Wall".to_owned(),
+            "Box".to_owned(),
+            "Life".to_owned(),
+            "Goal".to_owned(),
+        ]))
+        .export_info()
+    }
+}
+
+impl ToVariant for CellType {
+    fn to_variant(&self) -> Variant {
+        match self {
+            CellType::Empty => { (-1).to_variant() },
+            CellType::Wall => { 0.to_variant() },
+            CellType::Box => { 1.to_variant() },
+            CellType::Life => { 2.to_variant() },
+            CellType::Goal => { 3.to_variant() },
+        }
+    }
 }
 
 #[derive(NativeClass)]
