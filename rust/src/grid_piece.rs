@@ -1,5 +1,6 @@
 use std::error::Error;
 
+use gdnative::api::tween::{EaseType, TransitionType};
 use gdnative::api::*;
 // use gdnative::object::ownership;
 use gdnative::prelude::*;
@@ -44,7 +45,7 @@ pub struct GridPiece {
     grid: Option<Instance<Grid>>,
     tween: Option<Ref<Tween>>,
     #[property(default = 0.25)]
-    time_animation: f32,
+    time_animation: f64,
     pub cell_type: CellType,
 }
 
@@ -91,7 +92,19 @@ impl GridPiece {
         self.tween = Some(tween.claim());
     }
 
-    pub fn move_to(&mut self, owner: &StaticBody2D) {
+    pub fn move_to(&mut self, owner: TRef<StaticBody2D>, new_pos: Vector2) {
         owner.emit_signal("started_moving", &[]);
+        owner.set_process(false);
+        let t = unsafe { self.tween.unwrap().assume_safe() };
+        let _ = t.interpolate_property(
+            owner,
+            "position",
+            owner.position(),
+            new_pos,
+            self.time_animation,
+            i64::from(TransitionType::SINE),
+            i64::from(EaseType::OUT),
+            0.0,
+        );
     }
 }
