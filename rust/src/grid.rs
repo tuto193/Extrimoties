@@ -127,9 +127,8 @@ impl Grid {
                 if box_start_position == box_end_pos {
                     return piece_position;
                 }
-                let new_position =
-                    self.upgrade_grid_positions(owner, piece, cell_map_start, cell_map_target);
-                piece.map(|p, _o| p.move_to(_o));
+                let new_position = self.upgrade_grid_positions(owner, piece, cell_map_start, cell_map_target);
+                piece.move_to(piece.base(), new_position);
 
                 return Vector2::new(0.0, 0.0);
             }
