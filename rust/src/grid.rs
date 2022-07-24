@@ -80,17 +80,11 @@ impl Grid {
     fn upgrade_grid_positions(
         &self,
         owner: TRef<TileMap>,
-        piece: TInstance<GridPiece>,
+        mov_piece_type: CellType,
         start: Vector2,
         target: Vector2,
     ) -> Vector2 {
-        owner.set_cellv(
-            target,
-            piece.map(|p, _o| p.cell_type).unwrap() as i64,
-            false,
-            false,
-            false,
-        );
+        owner.set_cellv(target, mov_piece_type as i64, false, false, false);
         owner.set_cellv(start, CellType::Empty as i64, false, false, false);
         owner.map_to_world(target, false) + (owner.cell_size() / 2.0)
     }
@@ -105,6 +99,7 @@ impl Grid {
         let cell_map_start = owner.world_to_map(piece_position);
         let cell_map_target = cell_map_start + direction;
         let target_cell_type = CellType::from_i64(owner.get_cellv(cell_map_target)).unwrap();
+        let moving_piece_type = piece.map(|p, _o| p.cell_type).unwrap();
         // let target_cell_type = match target_cell_type {
         //     Ok(t) => t,
         //     Err(e) => godot_error!("Error when getting enum: {:?}", e),
@@ -113,7 +108,6 @@ impl Grid {
             CellType::Box => {
                 let target_piece = &self.get_cell_content(owner, cell_map_target).unwrap();
                 let target_piece = unsafe { target_piece.assume_safe() };
-                let moving_piece_type = piece.map(|p, o| p.cell_type).unwrap();
                 // Boxes cannot push each other (for now?)
                 if moving_piece_type == CellType::Box {
                     godot_print!(
@@ -127,15 +121,33 @@ impl Grid {
                 if box_start_position == box_end_pos {
                     return piece_position;
                 }
-                let new_position = self.upgrade_grid_positions(owner, piece, cell_map_start, cell_map_target);
-                piece.move_to(piece.base(), new_position);
+                let new_position = self.upgrade_grid_positions(
+                    owner,
+                    moving_piece_type,
+                    cell_map_start,
+                    cell_map_target,
+                );
+                let _ = piece.map_mut(|p, o| p.move_to(o, new_position));
 
-                return Vector2::new(0.0, 0.0);
+                return new_position;
             }
-            CellType::Empty => todo!(),
-            CellType::Wall => todo!(),
-            CellType::Life => todo!(),
-            CellType::Goal => todo!(),
+            CellType::Wall => {
+                godot_print!("Cell {:?} contains a wall", cell_map_target);
+                return piece_position;
+            }
+            _ => {
+                let new_position = self.upgrade_grid_positions(
+                    owner,
+                    moving_piece_type,
+                    cell_map_start,
+                    cell_map_target,
+                );
+                let _ = piece.map_mut(|p, o| p.move_to(o, new_position));
+                return new_position;
+            }
+            // CellType::Empty => todo!(),
+            // CellType::Life => todo!(),
+            // CellType::Goal => todo!(),
         }
     }
 }

@@ -24,21 +24,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scenes/Blocks/goal.gd"
 }, {
-"base": "TileMap",
-"class": "Grid",
-"language": "GDScript",
-"path": "res://Scenes/Level/grid.gd"
-}, {
-"base": "StaticBody2D",
-"class": "GridPiece",
-"language": "GDScript",
-"path": "res://Scenes/Share/grid_piece.gd"
-}, {
-"base": "Reference",
-"class": "GridTraits",
-"language": "GDScript",
-"path": "res://Scenes/Share/grid_traits.gd"
-}, {
 "base": "GridPiece",
 "class": "Hole",
 "language": "GDScript",
@@ -53,9 +38,6 @@ _global_script_class_icons={
 "Box": "",
 "Eye": "",
 "Goal": "",
-"Grid": "",
-"GridPiece": "",
-"GridTraits": "",
 "Hole": "",
 "Wall": ""
 }

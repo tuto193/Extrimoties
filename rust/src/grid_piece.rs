@@ -1,7 +1,7 @@
 use gdnative::api::tween::{EaseType, TransitionType};
 use gdnative::api::*;
-use gdnative::export::Export;
 use gdnative::export::hint::{EnumHint, IntHint};
+use gdnative::export::Export;
 // use gdnative::object::ownership;
 use gdnative::prelude::*;
 
@@ -50,7 +50,7 @@ impl FromVariant for CellType {
             _ => Err(FromVariantError::UnknownEnumVariant {
                 variant: "i64".to_owned(),
                 expected: &["-1", "0", "1", "2", "3"],
-             }),
+            }),
         }
     }
 }
@@ -73,11 +73,11 @@ impl Export for CellType {
 impl ToVariant for CellType {
     fn to_variant(&self) -> Variant {
         match self {
-            CellType::Empty => { (-1).to_variant() },
-            CellType::Wall => { 0.to_variant() },
-            CellType::Box => { 1.to_variant() },
-            CellType::Life => { 2.to_variant() },
-            CellType::Goal => { 3.to_variant() },
+            CellType::Empty => (-1).to_variant(),
+            CellType::Wall => 0.to_variant(),
+            CellType::Box => 1.to_variant(),
+            CellType::Life => 2.to_variant(),
+            CellType::Goal => 3.to_variant(),
         }
     }
 }
@@ -133,7 +133,13 @@ impl GridPiece {
         let tween = tween
             .cast::<Tween>()
             .expect("Child must be of type 'Tween'");
-        tween.connect("tween_completed", owner, "on_tween_tween_completed", VariantArray::new_shared(), 0);
+        let _ = tween.connect(
+            "tween_completed",
+            owner,
+            "on_tween_tween_completed",
+            VariantArray::new_shared(),
+            0,
+        );
         self.tween = Some(tween.claim());
     }
 
