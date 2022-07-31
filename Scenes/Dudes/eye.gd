@@ -25,9 +25,9 @@ onready var animated_sprite: AnimatedSprite = $AnimatedSprite
 
 var _can_move: bool = true
 
-func _init() -> void:
-# To differentiate from others in grid
-	self.cell_type = GridTraits.CellType.LIFE
+func _init(c_t = GridTraits.CellType.LIFE).(c_t) -> void:
+	pass
+
 
 func _on_GridPiece_started_moving() ->void:
 	self._can_move = false

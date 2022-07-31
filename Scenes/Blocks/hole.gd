@@ -3,8 +3,9 @@ extends GridPiece
 
 signal object_entered(object)
 
-func _init() -> void:
-	self.cell_type = GridTraits.CellType.EMPTY
+func _init(c_t = GridTraits.CellType.EMPTY).(c_t) -> void:
+	pass
+
 
 
 # @virtual

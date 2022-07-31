@@ -1,8 +1,9 @@
 class_name Goal
 extends GridPiece
 
-func _init() -> void:
-	self.cell_type = GridTraits.CellType.GOAL
+func _init(c_t = GridTraits.CellType.GOAL).(c_t) -> void:
+	pass
+
 
 func step_into_check(object: GridPiece) -> void:
 	if object is Eye:

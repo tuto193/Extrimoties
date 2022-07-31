@@ -1,7 +1,7 @@
 class_name GridPiece
 extends StaticBody2D
 
-var cell_type = GridTraits.CellType.EMPTY
+var cell_type
 
 onready var grid: Grid = get_parent()
 onready var tween: Tween = $Tween
@@ -14,6 +14,9 @@ signal finished_moving
 
 # Notify about falling to deal with freeing and animations
 signal fall_in_hole
+
+func _init(c_t = GridTraits.CellType.EMPTY) -> void:
+	self.cell_type = c_t
 
 # Basic move function:
 # TODO: expand once animations are implemented
