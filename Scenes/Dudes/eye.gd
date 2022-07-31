@@ -21,7 +21,7 @@ enum FaceDir {
 # Current looking direction of the eye
 onready var current_state
 
-onready var animated_sprite: AnimatedSprite = $AnimatedSprite
+onready var animated_sprite: AnimatedSprite
 
 var _can_move: bool = true
 
@@ -37,9 +37,10 @@ func _on_GridPiece_finished_moving() ->void:
 
 func _ready():
 	# Spicy initialization, but works
+	self.animated_sprite = .get_node("AnimatedSprite")
 	self.current_state = FaceDir[animated_sprite.animation.to_upper()]
-	var _err = self.connect("started_moving", self, "_on_GridPiece_started_moving")
-	_err = self.connect("finished_moving", self, "_on_GridPiece_finished_moving")
+	var _err = .connect("started_moving", self, "_on_GridPiece_started_moving")
+	_err = .connect("finished_moving", self, "_on_GridPiece_finished_moving")
 
 # Returns the input direction. It can only be one of the four main ones
 # and no diagonal vectores are allowed/returned.
@@ -126,7 +127,7 @@ func _physics_process(_delta) -> void:
 	# No type hinting, since it throws errors in case of null
 	if direction_vector.length() > 0 and _can_move:
 		# Not neccessary right now
-		var old_pos = position
-		var new_pos: Vector2 = grid.move_piece_towards(self, direction_vector)
+		var old_pos = self.position
+		var new_pos: Vector2 = self.grid.move_piece_towards(self, direction_vector)
 		if old_pos != new_pos:
 			_update_state(direction_vector)

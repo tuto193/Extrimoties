@@ -20,9 +20,15 @@ func move_piece_towards(piece: StaticBody2D, direction: Vector2) -> Vector2:
 	var cell_map_target: Vector2 = cell_map_start + direction
 
 	var cell_map_target_type = get_cellv(cell_map_target)
+	var object_piece = get_cell_content(cell_map_target)
+	var new_pos: Vector2 = update_grid_positions(
+		piece.cell_type,
+		cell_map_start,
+		cell_map_target
+	)
+
 	match cell_map_target_type:
 		GridTraits.CellType.BOX:
-			var object_piece: StaticBody2D= get_cell_content(cell_map_target)
 			# Commented out, since we want to move objects, not destroy them
 			if piece.cell_type == GridTraits.CellType.BOX:
 				print("Cell %s already contains a box. Cannot push" %(cell_map_target))
@@ -37,26 +43,28 @@ func move_piece_towards(piece: StaticBody2D, direction: Vector2) -> Vector2:
 				return piece.position # didn't move
 			# Object was already successfully moved, so we don't need to
 			# update any more stuff from it
-			var new_pos: Vector2 = update_grid_positions(
-				piece.cell_type,
-				cell_map_start,
-				cell_map_target
-			)
 			piece.move_to(new_pos)
 			return new_pos
 		GridTraits.CellType.WALL:
 			print("Cell %s contains a wall" %(cell_map_target))
 			return piece.position # didn't move the piece. Return origin
-		_: # Can move to new position
-			var new_pos: Vector2 = update_grid_positions(
-				piece.cell_type,
-				cell_map_start,
-				cell_map_target
-			)
+		GridTraits.CellType.EMPTY: # Can move to new position
+			piece.move_to(new_pos)
+			return new_pos
+		GridTraits.CellType.HOLE:
+			piece.move_to(new_pos)
+			(object_piece as Hole).step_into_check(piece)
+			return new_pos
+		GridTraits.CellType.GOAL:
+			piece.move_to(new_pos)
+			(object_piece as Goal).step_into_check(piece)
+			return new_pos
+		_:
 			piece.move_to(new_pos)
 			return new_pos
 
-func update_grid_positions(piece_type, cell_map_start, cell_map_target) -> Vector2:
-	set_cellv(cell_map_target, piece_type)
-	set_cellv(cell_map_start, GridTraits.CellType.EMPTY)
+
+func update_grid_positions(piece, cell_map_start: Vector2, cell_map_target: Vector2) -> Vector2:
+	set_cellv(cell_map_target, piece.cell_type)
+	set_cellv(cell_map_start, piece.is_standing_on)
 	return map_to_world(cell_map_target) + cell_size / 2
