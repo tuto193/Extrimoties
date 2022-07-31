@@ -1,9 +1,12 @@
 class_name GridPiece
 extends StaticBody2D
 
+var cell_type = GridTraits.CellType.EMPTY
+
 onready var grid: Grid = get_parent()
 onready var tween: Tween = $Tween
 export var time_animation: float = 0.25
+var is_standing_on = GridTraits.CellType.EMPTY
 
 # Basic movement
 signal started_moving
@@ -37,6 +40,10 @@ func move_to(new_pos: Vector2) -> void:
 # Deal with collisions when there's a hole. Returns 'true' if falls in hole
 # Landing on a hole, will make the
 # piece disappear
-func handle_hole(_hole: GridPiece) -> bool:
+func enter_hole(hole: GridPiece) -> bool:
+	self.is_standing_on = hole
 	emit_signal("fall_in_hole")
 	return true
+
+func exit_hole(_hole: GridPiece) -> void:
+	self.is_on_hole = false

@@ -1,5 +1,6 @@
+class_name Box
 extends GridPiece
 
-class_name Box
 
-var type = GridTraits.CellType.BOX
+func _init() -> void:
+	self.cell_type = GridTraits.CellType.BOX

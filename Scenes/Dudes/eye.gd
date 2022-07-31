@@ -2,8 +2,6 @@ class_name Eye
 extends GridPiece
 
 
-# To differentiate from others in grid
-var type = GridTraits.CellType.LIFE
 
 # speed of movement in grid
 export var move_delay: float = 1
@@ -26,6 +24,10 @@ onready var current_state
 onready var animated_sprite: AnimatedSprite = $AnimatedSprite
 
 var _can_move: bool = true
+
+func _init() -> void:
+# To differentiate from others in grid
+	self.cell_type = GridTraits.CellType.LIFE
 
 func _on_GridPiece_started_moving() ->void:
 	self._can_move = false

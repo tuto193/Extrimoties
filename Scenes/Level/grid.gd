@@ -4,7 +4,7 @@ extends TileMap
 
 func _ready():
 	for child in get_children():
-		set_cellv(world_to_map(child.position),child.type)
+		set_cellv(world_to_map(child.position),child.cell_type)
 
 func get_cell_content(coordinates: Vector2) -> StaticBody2D:
 	for node in get_children():
@@ -24,7 +24,7 @@ func move_piece_towards(piece: StaticBody2D, direction: Vector2) -> Vector2:
 		GridTraits.CellType.BOX:
 			var object_piece: StaticBody2D= get_cell_content(cell_map_target)
 			# Commented out, since we want to move objects, not destroy them
-			if piece.type == GridTraits.CellType.BOX:
+			if piece.cell_type == GridTraits.CellType.BOX:
 				print("Cell %s already contains a box. Cannot push" %(cell_map_target))
 				return piece.position
 			# Not a box
@@ -38,7 +38,7 @@ func move_piece_towards(piece: StaticBody2D, direction: Vector2) -> Vector2:
 			# Object was already successfully moved, so we don't need to
 			# update any more stuff from it
 			var new_pos: Vector2 = update_grid_positions(
-				piece,
+				piece.cell_type,
 				cell_map_start,
 				cell_map_target
 			)
@@ -49,14 +49,14 @@ func move_piece_towards(piece: StaticBody2D, direction: Vector2) -> Vector2:
 			return piece.position # didn't move the piece. Return origin
 		_: # Can move to new position
 			var new_pos: Vector2 = update_grid_positions(
-				piece,
+				piece.cell_type,
 				cell_map_start,
 				cell_map_target
 			)
 			piece.move_to(new_pos)
 			return new_pos
 
-func update_grid_positions(piece, cell_map_start, cell_map_target) -> Vector2:
-	set_cellv(cell_map_target, piece.type)
+func update_grid_positions(piece_type, cell_map_start, cell_map_target) -> Vector2:
+	set_cellv(cell_map_target, piece_type)
 	set_cellv(cell_map_start, GridTraits.CellType.EMPTY)
 	return map_to_world(cell_map_target) + cell_size / 2

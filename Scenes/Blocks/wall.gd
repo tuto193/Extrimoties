@@ -2,4 +2,5 @@ extends GridPiece
 
 class_name Wall
 
-var type = GridTraits.CellType.WALL
+func _init() -> void:
+	self.cell_type = GridTraits.CellType.WALL
