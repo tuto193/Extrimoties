@@ -65,6 +65,11 @@ public class Grid : TileMap {
 				((Hole) object_piece).StepIntoCheck(piece);
 				return new_pos;
 			case CellType.Goal:
+				piece.MoveTo(new_pos);
+				((Goal) object_piece).StepIntoCheck(piece);
+				return new_pos;
+			default:
+				piece.MoveTo(new_pos);
 				return new_pos;
 		}
 	}
