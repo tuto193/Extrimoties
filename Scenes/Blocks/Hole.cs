@@ -4,12 +4,11 @@ using static GridTraits;
 
 public class Hole : GridPiece {
     [Signal]
-    delegate void ObjectEntered(GridPiece gp);
+    protected delegate void ObjectEntered(GridPiece gp);
 
-    // public override void _Init()
-    // {
+    protected CellType _cell_type = CellType.Hole;
 
-    // }
+    public override CellType Cell_Type { get{return _cell_type;} }
 
     public virtual void StepIntoCheck(GridPiece gp)
     {

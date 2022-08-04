@@ -2,8 +2,7 @@ using Godot;
 using System;
 using static GridTraits;
 
-public class GridPiece : StaticBody2D
-{
+public class GridPiece : StaticBody2D {
 	private Tween _tween;
 
 	protected CellType _is_standing_on;
@@ -18,13 +17,13 @@ public class GridPiece : StaticBody2D
 
 	// Signals
 	[Signal]
-	delegate void StartedMoving();
+	protected delegate void StartedMoving();
 
 	[Signal]
-	delegate void FinishedMoving();
+	protected delegate void FinishedMoving();
 
 	[Signal]
-	delegate void FallInHole();
+	protected delegate void FallInHole();
 
 
 	public virtual CellType Cell_Type {
@@ -33,13 +32,11 @@ public class GridPiece : StaticBody2D
 	}
 
 	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
+	public override void _Ready() {
 		this._tween = GetNode<Tween>("Tween");
 	}
 
-	public virtual async void MoveTo(Vector2 new_pos)
-	{
+	public virtual async void MoveTo(Vector2 new_pos) {
 		EmitSignal(nameof(StartedMoving));
 		SetProcess(false);
 		bool _unused = _tween.InterpolateProperty(
@@ -57,9 +54,16 @@ public class GridPiece : StaticBody2D
 		EmitSignal(nameof(FinishedMoving));
 	}
 
-	public virtual bool HandleHole(GridPiece _hole)
-	{
-		EmitSignal(nameof(FallInHole));
-		return true;
+	public bool EnterHole(Hole h) {
+		this.IsStandingOn = h.Cell_Type;
+		if (IsStandingOn == CellType.Hole) {
+			EmitSignal(nameof(FallInHole));
+			return true;
+		}
+		return false;
+	}
+
+	public bool ExitHole(Hole h) {
+
 	}
 }
