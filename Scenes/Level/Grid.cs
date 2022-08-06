@@ -23,11 +23,6 @@ public class Grid : TileMap {
 		Vector2 cell_map_target = cell_map_start + direction;
 		CellType target_cell_type = (CellType) GetCellv(cell_map_target);
 		GridPiece object_piece = GetCellContent(cell_map_target);
-		Vector2 new_pos = UpdateGridPositions(
-			piece,
-			cell_map_start,
-			cell_map_target
-		);
 
 		switch (target_cell_type) {
 			case CellType.Box:
@@ -43,7 +38,12 @@ public class Grid : TileMap {
 				if (object_world_start == object_new_pos) {
 					return piece.Position;
 				}
-				piece.MoveTo(new_pos);
+				piece.MoveTo(new_pos, target_cell_type);
+				Vector2 new_pos = UpdateGridPositions(
+					piece,
+					cell_map_start,
+					cell_map_target
+				);
 				return new_pos;
 			case CellType.Wall:
 				GD.Print("Cell {} contains a wall", cell_map_target);
@@ -65,7 +65,11 @@ public class Grid : TileMap {
 		}
 	}
 
-	private Vector2 UpdateGridPositions(GridPiece piece, Vector2 cell_map_start, Vector2 cell_map_target) {
+	private Vector2 UpdateGridPositions(
+		GridPiece piece,
+		Vector2 cell_map_start,
+		Vector2 cell_map_target
+	) {
 		SetCellv(cell_map_target, (int) piece.Cell_Type);
 		SetCellv(cell_map_start, (int) piece.IsStandingOn);
 		return MapToWorld(cell_map_target) + CellSize / 2;

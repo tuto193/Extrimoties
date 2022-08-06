@@ -36,7 +36,7 @@ public class GridPiece : StaticBody2D {
 		this._tween = GetNode<Tween>("Tween");
 	}
 
-	public virtual async void MoveTo(Vector2 new_pos) {
+	public virtual async void MoveTo(Vector2 new_pos, CellType np_type) {
 		EmitSignal(nameof(StartedMoving));
 		SetProcess(false);
 		bool _unused = _tween.InterpolateProperty(
@@ -50,6 +50,7 @@ public class GridPiece : StaticBody2D {
 		);
 		_unused = _tween.Start();
 		await ToSignal(_tween, "tween_completed");
+		this.IsStandingOn = np_type;
 		SetProcess(true);
 		EmitSignal(nameof(FinishedMoving));
 	}
@@ -64,6 +65,7 @@ public class GridPiece : StaticBody2D {
 	}
 
 	public bool ExitHole(Hole h) {
-
+		// this.IsStandingOn =
+		return false;
 	}
 }
