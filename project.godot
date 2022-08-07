@@ -8,58 +8,6 @@
 
 config_version=4
 
-_global_script_classes=[ {
-"base": "GridPiece",
-"class": "Box",
-"language": "GDScript",
-"path": "res://Scenes/Blocks/box.gd"
-}, {
-"base": "GridPiece",
-"class": "Eye",
-"language": "GDScript",
-"path": "res://Scenes/Dudes/eye.gd"
-}, {
-"base": "GridPiece",
-"class": "Goal",
-"language": "GDScript",
-"path": "res://Scenes/Blocks/goal.gd"
-}, {
-"base": "TileMap",
-"class": "Grid",
-"language": "GDScript",
-"path": "res://Scenes/Level/grid.gd"
-}, {
-"base": "StaticBody2D",
-"class": "GridPiece",
-"language": "GDScript",
-"path": "res://Scenes/Share/grid_piece.gd"
-}, {
-"base": "Reference",
-"class": "GridTraits",
-"language": "GDScript",
-"path": "res://Scenes/Share/grid_traits.gd"
-}, {
-"base": "GridPiece",
-"class": "Hole",
-"language": "GDScript",
-"path": "res://Scenes/Blocks/hole.gd"
-}, {
-"base": "GridPiece",
-"class": "Wall",
-"language": "GDScript",
-"path": "res://Scenes/Blocks/wall.gd"
-} ]
-_global_script_class_icons={
-"Box": "",
-"Eye": "",
-"Goal": "",
-"Grid": "",
-"GridPiece": "",
-"GridTraits": "",
-"Hole": "",
-"Wall": ""
-}
-
 [application]
 
 config/name="Extrimoties"

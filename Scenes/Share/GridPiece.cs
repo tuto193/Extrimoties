@@ -3,9 +3,7 @@ using System;
 using static GridTraits;
 
 public class GridPiece : StaticBody2D {
-	private Tween _tween;
-
-	protected CellType _is_standing_on;
+	protected CellType _is_standing_on = CellType.Empty;
 
 	public CellType IsStandingOn {
 		get {return _is_standing_on;}
@@ -13,7 +11,7 @@ public class GridPiece : StaticBody2D {
 	}
 
 	[Export]
-	private float _time_animation;
+	private float _time_animation = 0.25f;
 
 	// Signals
 	[Signal]
@@ -33,23 +31,29 @@ public class GridPiece : StaticBody2D {
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready() {
-		this._tween = GetNode<Tween>("Tween");
 	}
 
-	public virtual async void MoveTo(Vector2 new_pos, CellType np_type) {
+	public virtual async void MoveTo(Vector2 new_pos, CellType np_type = CellType.Empty) {
+		GD.Print("Starting `MoveTo`");
 		EmitSignal(nameof(StartedMoving));
 		SetProcess(false);
-		bool _unused = _tween.InterpolateProperty(
-			this,
-			"Position",
-			Position,
-			new_pos,
-			_time_animation,
-			Tween.TransitionType.Sine,
-			Tween.EaseType.Out
-		);
-		_unused = _tween.Start();
-		await ToSignal(_tween, "tween_completed");
+		SceneTreeTween _tween = GetTree()
+			.CreateTween()
+			.SetTrans(Tween.TransitionType.Sine)
+			.SetEase(Tween.EaseType.Out);
+		_tween.TweenProperty(this, "position", new_pos, _time_animation);
+		// bool _unused = _tween.InterpolateProperty(
+		// 	this,
+		// 	"Position",
+		// 	Position,
+		// 	new_pos,
+		// 	_time_animation,
+		// 	Tween.TransitionType.Sine,
+		// 	Tween.EaseType.Out
+		// );
+		GD.Print("After Tween call");
+		// _unused = _tween.Start();
+		await ToSignal(_tween, "finished");
 		this.IsStandingOn = np_type;
 		SetProcess(true);
 		EmitSignal(nameof(FinishedMoving));

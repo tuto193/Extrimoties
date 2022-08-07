@@ -38,30 +38,50 @@ public class Grid : TileMap {
 				if (object_world_start == object_new_pos) {
 					return piece.Position;
 				}
-				piece.MoveTo(new_pos, target_cell_type);
 				Vector2 new_pos = UpdateGridPositions(
 					piece,
 					cell_map_start,
 					cell_map_target
 				);
+				piece.MoveTo(new_pos);
 				return new_pos;
 			case CellType.Wall:
 				GD.Print("Cell {} contains a wall", cell_map_target);
 				return piece.Position;
 			case CellType.Empty:
-				piece.MoveTo(new_pos);
-				return new_pos;
+				Vector2 new_pos2 = UpdateGridPositions(
+					piece,
+					cell_map_start,
+					cell_map_target
+				);
+				piece.MoveTo(new_pos2);
+				return new_pos2;
 			case CellType.Hole:
-				piece.MoveTo(new_pos);
+				Vector2 new_pos3 = UpdateGridPositions(
+					piece,
+					cell_map_start,
+					cell_map_target
+				);
+				piece.MoveTo(new_pos3, target_cell_type);
 				((Hole) object_piece).StepIntoCheck(piece);
-				return new_pos;
+				return new_pos3;
 			case CellType.Goal:
-				piece.MoveTo(new_pos);
+				Vector2 new_pos4 = UpdateGridPositions(
+					piece,
+					cell_map_start,
+					cell_map_target
+				);
+				piece.MoveTo(new_pos4, target_cell_type);
 				((Goal) object_piece).StepIntoCheck(piece);
-				return new_pos;
+				return new_pos4;
 			default:
-				piece.MoveTo(new_pos);
-				return new_pos;
+				Vector2 new_pos5 = UpdateGridPositions(
+					piece,
+					cell_map_start,
+					cell_map_target
+				);
+				piece.MoveTo(new_pos5);
+				return new_pos5;
 		}
 	}
 
