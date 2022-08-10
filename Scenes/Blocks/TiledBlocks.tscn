@@ -1,0 +1,11 @@
+[gd_scene format=2]
+
+[node name="TiledBlocks" type="Node2D"]
+
+[node name="Block" type="Sprite" parent="."]
+
+[node name="Wall" type="Sprite" parent="."]
+
+[node name="Hole" type="Sprite" parent="."]
+
+[node name="Goal" type="Sprite" parent="."]
