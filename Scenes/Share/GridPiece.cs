@@ -2,7 +2,7 @@ using Godot;
 using System;
 using static GridTraits;
 
-public class GridPiece : StaticBody2D {
+public class GridPiece : AnimatedSprite {
 	protected CellType _is_standing_on = CellType.Empty;
 
 	public CellType IsStandingOn {
