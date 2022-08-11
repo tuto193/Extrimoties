@@ -7,9 +7,9 @@ public class TilePlaceholder : Sprite
 	public override void _Draw()
 	{
 		if (Engine.EditorHint) {
-			this.Visible = false;
+			this.Visible = true;
 			return;
 		}
-		this.Visible = true;
+		this.Visible = false;
 	}
 }

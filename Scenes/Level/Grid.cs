@@ -3,9 +3,66 @@ using System;
 using static GridTraits;
 
 public class Grid : TileMap {
+	private PackedScene box = GD.Load<PackedScene>("res://Scenes/Blocks/Box.tscn");
+	private PackedScene hole = GD.Load<PackedScene>("res://Scenes/Blocks/Hole.tscn");
+	private PackedScene goal = GD.Load<PackedScene>("res://Scenes/Blocks/Goal.tscn");
+	private PackedScene wall = GD.Load<PackedScene>("res://Scenes/Blocks/Wall.tscn");
 	public override void _Ready() {
+		GD.Print(TileSet.GetTilesIds());
+		foreach(Vector2 cell_pos in GetUsedCells()) {
+			// Box, Goal, Hole, Wall
+			int cell_type = GetCellv(cell_pos);
+			String tile_name = TileSet.TileGetName(cell_type);
+			// Need to instance the actual scenes, add them as children, set the cell to the actual type
+			// Just initializing. Overwrite this value
+			CellType expected_type = CellType.Empty;
+			switch (tile_name) {
+				case "Box":
+					expected_type = CellType.Box;
+					break;
+				case "Goal":
+					expected_type = CellType.Goal;
+					break;
+				case "Hole":
+					expected_type = CellType.Hole;
+					break;
+				case "Wall":
+					expected_type = CellType.Wall;
+					break;
+				default:
+					break;
+			}
+			// Only update non-empty cells
+			if (expected_type != CellType.Empty) {
+				GridPiece gp = InstantiateCell(expected_type);
+				gp.Position = MapToWorld(cell_pos) * Scale;
+				AddChild(gp);
+				// Don't need to set this, since it's already done below
+				// SetCellv(cell_pos, (int) gp.Cell_Type);
+			}
+
+		}
+		// Initialize the children last, so they don't intervene with tiled values
 		foreach (GridPiece child in GetChildren()) {
 			SetCellv(WorldToMap(child.Position), ((int) child.Cell_Type));
+		}
+	}
+
+	private GridPiece InstantiateCell(CellType ct) {
+		switch (ct) {
+			case CellType.Box:
+				return box.Instance<Box>();
+			case CellType.Goal:
+				return goal.Instance<Goal>();
+			case CellType.Hole:
+				return hole.Instance<Hole>();
+			case CellType.Wall:
+				return wall.Instance<Wall>();
+			default:
+				// This will never return.
+				GD.PrintErr(ct, $"Error: {ct} is not a valid GridPiece type to instantiate from Tileset");
+				return null;
+				// return new Eye();
 		}
 	}
 
@@ -26,6 +83,7 @@ public class Grid : TileMap {
 
 		switch (target_cell_type) {
 			case CellType.Box:
+				GD.Print("OMG, a Box!");
 				if (piece.Cell_Type == CellType.Box) {
 					GD.Print("Cell {} already contains a box. Cannot push two at a time", cell_map_target);
 					return piece.Position;
@@ -57,6 +115,7 @@ public class Grid : TileMap {
 				piece.MoveTo(new_pos2);
 				return new_pos2;
 			case CellType.Hole:
+				GD.Print("aAaAaAaAaAaA");
 				Vector2 new_pos3 = UpdateGridPositions(
 					piece,
 					cell_map_start,
@@ -66,6 +125,7 @@ public class Grid : TileMap {
 				((Hole) object_piece).StepIntoCheck(piece);
 				return new_pos3;
 			case CellType.Goal:
+				GD.Print("Almost won!");
 				Vector2 new_pos4 = UpdateGridPositions(
 					piece,
 					cell_map_start,
@@ -75,6 +135,7 @@ public class Grid : TileMap {
 				((Goal) object_piece).StepIntoCheck(piece);
 				return new_pos4;
 			default:
+				GD.Print("Whatever the hell this is");
 				Vector2 new_pos5 = UpdateGridPositions(
 					piece,
 					cell_map_start,
