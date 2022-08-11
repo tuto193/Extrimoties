@@ -4,8 +4,7 @@
 [ext_resource path="res://Scenes/Blocks/Blocks.tres" type="TileSet" id=2]
 
 [node name="TileMap" type="TileMap"]
+position = Vector2( 0, -1 )
 tile_set = ExtResource( 2 )
-cell_size = Vector2( 32, 32 )
-cell_custom_transform = Transform2D( 32, 0, 0, 32, 0, 0 )
 format = 1
 script = ExtResource( 1 )
