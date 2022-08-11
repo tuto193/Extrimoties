@@ -23,7 +23,6 @@ public class Eye : GridPiece {
 
 	private FaceDir _current_state;
 
-	private AnimatedSprite _animated_sprite;
 
 	private Grid _grid;
 
@@ -42,9 +41,8 @@ public class Eye : GridPiece {
 	}
 
 	public override void _Ready() {
-		this._animated_sprite = GetNode<AnimatedSprite>("AnimatedSprite");
 		this._grid = GetParent<Grid>();
-		this._current_state = FaceDirFromString(_animated_sprite.Animation.ToUpper());
+		this._current_state = FaceDirFromString(this.Animation.ToUpper());
 		Error _err = Connect(nameof(FinishedMoving), this, nameof(_on_GridPiece_FinishedMoving));
 		_err = Connect(nameof(StartedMoving), this, nameof(_on_GridPiece_StartedMoving));
 	}
@@ -179,7 +177,7 @@ public class Eye : GridPiece {
 
 	private void UpdateAnimation(FaceDir _old_state) {
 
-		_animated_sprite.Animation = StringFromFaceDir(_current_state).ToLower();
+		Animation = StringFromFaceDir(_current_state).ToLower();
 	}
 
 	public override void _PhysicsProcess(float delta)
