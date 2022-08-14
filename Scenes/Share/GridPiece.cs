@@ -10,6 +10,13 @@ public class GridPiece : AnimatedSprite {
 		set { _is_standing_on = value;}
 	}
 
+	private Vector2 _initial_position;
+
+	public Vector2 InitialPosition {
+		get {return _initial_position;}
+		set {_initial_position = value;}
+	}
+
 	[Export]
 	private float _time_animation = 0.25f;
 
@@ -69,5 +76,12 @@ public class GridPiece : AnimatedSprite {
 	public bool ExitHole(Hole h) {
 		// this.IsStandingOn =
 		return false;
+	}
+
+	public virtual async void PlayFallInHole() {
+		SceneTreeTween tween = GetTree()
+			.CreateTween()
+			.SetTrans(Tween.TransitionType.Sine)
+			.SetEase(Tween.EaseType.Out);
 	}
 }

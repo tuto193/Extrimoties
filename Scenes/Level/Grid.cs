@@ -155,4 +155,9 @@ public class Grid : TileMap {
 		SetCellv(cell_map_start, (int) piece.IsStandingOn);
 		return MapToWorld(cell_map_target) + CellSize / 2;
 	}
+
+	public void RespawnPieceAt(GridPiece gp) {
+
+		UpdateGridPositions(gp, WorldToMap(gp.Position), WorldToMap(gp.InitialPosition));
+	}
 }
