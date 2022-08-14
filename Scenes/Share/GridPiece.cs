@@ -3,6 +3,8 @@ using System;
 using static GridTraits;
 
 public class GridPiece : AnimatedSprite {
+	private AnimationPlayer _animation_player;
+
 	protected CellType _is_standing_on = CellType.Empty;
 
 	public CellType IsStandingOn {
@@ -30,14 +32,61 @@ public class GridPiece : AnimatedSprite {
 	[Signal]
 	protected delegate void FallInHole();
 
+	private CellType _cell_type;
 
 	public virtual CellType Cell_Type {
 		get;
 		// private set { _cell_type = value;}
 	}
 
+
+
+	public GridPiece(CellType ct = CellType.Empty) {
+		this._cell_type = ct;
+	}
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready() {
+		this._animation_player = GetNode<AnimationPlayer>("AnimationPlayer");
+		_animation_player.CurrentAnimation = $"{StringFromCellType(_cell_type).ToLower()}_idle";
+	}
+
+	public CellType CellTypeFromString(String ct) {
+		switch (ct.ToLower()) {
+			case "EMPTY":
+				return CellType.Empty;
+			case "BOX":
+				return CellType.Box;
+			case "WALL":
+				return CellType.Wall;
+			case "LIFE":
+				return CellType.Life;
+			case "GOAL":
+				return CellType.Goal;
+			case "HOLE":
+				return CellType.Hole;
+			default:
+				throw new ArgumentOutOfRangeException(ct, $"Not expected value: {ct}");
+		}
+	}
+
+	public String StringFromCellType(CellType ct) {
+		switch (ct) {
+			case CellType.Empty:
+				return "Empty";
+			case CellType.Box:
+				return "Box";
+			case CellType.Wall:
+				return "Wall";
+			case CellType.Life:
+				return "Life";
+			case CellType.Goal:
+				return "Goal";
+			case CellType.Hole:
+				return "Hole";
+			default:
+				throw new ArgumentOutOfRangeException(ct.ToString(), $"Unexpected value: {ct}");
+		}
 	}
 
 	public virtual async void MoveTo(Vector2 new_pos, CellType np_type = CellType.Empty) {

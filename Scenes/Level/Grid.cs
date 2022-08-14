@@ -3,10 +3,7 @@ using System;
 using static GridTraits;
 
 public class Grid : TileMap {
-	private PackedScene box = GD.Load<PackedScene>("res://Scenes/Blocks/Box.tscn");
-	private PackedScene hole = GD.Load<PackedScene>("res://Scenes/Blocks/Hole.tscn");
-	private PackedScene goal = GD.Load<PackedScene>("res://Scenes/Blocks/Goal.tscn");
-	private PackedScene wall = GD.Load<PackedScene>("res://Scenes/Blocks/Wall.tscn");
+	private PackedScene grid_piece = GD.Load<PackedScene>("res://Scenes/Blocks/GridPiece.tscn");
 	public override void _Ready() {
 		GD.Print(TileSet.GetTilesIds());
 		foreach(Vector2 cell_pos in GetUsedCells()) {
@@ -33,36 +30,16 @@ public class Grid : TileMap {
 					break;
 			}
 			// Only update non-empty cells
-			if (expected_type != CellType.Empty) {
-				GridPiece gp = InstantiateCell(expected_type);
-				gp.Position = MapToWorld(cell_pos) * Scale;
-				AddChild(gp);
-				// Don't need to set this, since it's already done below
-				// SetCellv(cell_pos, (int) gp.Cell_Type);
-			}
+			GridPiece gp = grid_piece.Instance<GridPiece>(expected_type);
+			gp.Position = MapToWorld(cell_pos) * Scale;
+			AddChild(gp);
+			// Don't need to set this, since it's already done below
+			// SetCellv(cell_pos, (int) gp.Cell_Type);
 
 		}
 		// Initialize the children last, so they don't intervene with tiled values
 		foreach (GridPiece child in GetChildren()) {
 			SetCellv(WorldToMap(child.Position), ((int) child.Cell_Type));
-		}
-	}
-
-	private GridPiece InstantiateCell(CellType ct) {
-		switch (ct) {
-			case CellType.Box:
-				return box.Instance<Box>();
-			case CellType.Goal:
-				return goal.Instance<Goal>();
-			case CellType.Hole:
-				return hole.Instance<Hole>();
-			case CellType.Wall:
-				return wall.Instance<Wall>();
-			default:
-				// This will never return.
-				GD.PrintErr(ct, $"Error: {ct} is not a valid GridPiece type to instantiate from Tileset");
-				return null;
-				// return new Eye();
 		}
 	}
 
