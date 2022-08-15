@@ -32,27 +32,34 @@ public class GridPiece : AnimatedSprite {
 	[Signal]
 	protected delegate void FallInHole();
 
-	private CellType _cell_type;
+	private CellType _cell_type = CellType.Empty;
 
 	public virtual CellType Cell_Type {
-		get;
-		// private set { _cell_type = value;}
+		get {return _cell_type;}
+		set { GD.Print($"Changing value to {value}");
+			_cell_type = value;}
 	}
 
 
 
-	public GridPiece(CellType ct = CellType.Empty) {
-		this._cell_type = ct;
+	// public GridPiece(CellType ct = CellType.Empty) {
+	// 	this._cell_type = ct;
+	// }
+
+	public void ReInitialize(CellType ct) {
+		GD.Print("In ReInitialize()");
+		Cell_Type = ct;
+		// Animation = $"{StringFromCellType(_cell_type).ToLower()}_idle";
 	}
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready() {
 		this._animation_player = GetNode<AnimationPlayer>("AnimationPlayer");
-		_animation_player.CurrentAnimation = $"{StringFromCellType(_cell_type).ToLower()}_idle";
+		Animation = $"{StringFromCellType(Cell_Type).ToLower()}_idle";
 	}
 
-	public CellType CellTypeFromString(String ct) {
-		switch (ct.ToLower()) {
+	public static CellType CellTypeFromString(String ct) {
+		switch (ct.ToUpper()) {
 			case "EMPTY":
 				return CellType.Empty;
 			case "BOX":
@@ -66,11 +73,11 @@ public class GridPiece : AnimatedSprite {
 			case "HOLE":
 				return CellType.Hole;
 			default:
-				throw new ArgumentOutOfRangeException(ct, $"Not expected value: {ct}");
+				throw new ArgumentOutOfRangeException(ct, $"Not expected value: {ct}\n");
 		}
 	}
 
-	public String StringFromCellType(CellType ct) {
+	public static String StringFromCellType(CellType ct) {
 		switch (ct) {
 			case CellType.Empty:
 				return "Empty";
@@ -113,7 +120,7 @@ public class GridPiece : AnimatedSprite {
 		EmitSignal(nameof(FinishedMoving));
 	}
 
-	public bool EnterHole(Hole h) {
+	public bool EnterHole(GridPiece h) {
 		this.IsStandingOn = h.Cell_Type;
 		if (IsStandingOn == CellType.Hole) {
 			EmitSignal(nameof(FallInHole));
@@ -122,7 +129,7 @@ public class GridPiece : AnimatedSprite {
 		return false;
 	}
 
-	public bool ExitHole(Hole h) {
+	public bool ExitHole(GridPiece h) {
 		// this.IsStandingOn =
 		return false;
 	}

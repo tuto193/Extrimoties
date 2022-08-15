@@ -1,44 +1,32 @@
 using Godot;
 using System;
 using static GridTraits;
+using static GridPiece;
 
 public class Grid : TileMap {
 	private PackedScene grid_piece = GD.Load<PackedScene>("res://Scenes/Blocks/GridPiece.tscn");
 	public override void _Ready() {
-		GD.Print(TileSet.GetTilesIds());
 		foreach(Vector2 cell_pos in GetUsedCells()) {
 			// Box, Goal, Hole, Wall
 			int cell_type = GetCellv(cell_pos);
-			String tile_name = TileSet.TileGetName(cell_type);
+			String tile_name = TileSet.TileGetName(cell_type).ToUpper();
+			GD.Print($"Cell {cell_pos} is of TileSet type {tile_name}");
 			// Need to instance the actual scenes, add them as children, set the cell to the actual type
 			// Just initializing. Overwrite this value
-			CellType expected_type = CellType.Empty;
-			switch (tile_name) {
-				case "Box":
-					expected_type = CellType.Box;
-					break;
-				case "Goal":
-					expected_type = CellType.Goal;
-					break;
-				case "Hole":
-					expected_type = CellType.Hole;
-					break;
-				case "Wall":
-					expected_type = CellType.Wall;
-					break;
-				default:
-					break;
-			}
-			// Only update non-empty cells
-			GridPiece gp = grid_piece.Instance<GridPiece>(expected_type);
+			CellType expected_type = GridPiece.CellTypeFromString(tile_name);
+			GridPiece gp = grid_piece.Instance<GridPiece>();
+			gp.ReInitialize(expected_type);
 			gp.Position = MapToWorld(cell_pos) * Scale;
 			AddChild(gp);
+			// gp.ReInitialize(expected_type);
 			// Don't need to set this, since it's already done below
-			// SetCellv(cell_pos, (int) gp.Cell_Type);
+			GD.Print($"Cell {cell_pos} will be set to {GridPiece.StringFromCellType(gp.Cell_Type)}, expected type was {expected_type}");
+			SetCellv(cell_pos, (int) gp.Cell_Type);
 
 		}
 		// Initialize the children last, so they don't intervene with tiled values
 		foreach (GridPiece child in GetChildren()) {
+			// String celltype = TileSet.TileGetName(GetCellv(WorldToMap(child.Position)));
 			SetCellv(WorldToMap(child.Position), ((int) child.Cell_Type));
 		}
 	}
@@ -81,7 +69,7 @@ public class Grid : TileMap {
 				piece.MoveTo(new_pos);
 				return new_pos;
 			case CellType.Wall:
-				GD.Print("Cell {} contains a wall", cell_map_target);
+				GD.Print($"Cell {object_piece} contains a wall", cell_map_target);
 				return piece.Position;
 			case CellType.Empty:
 				Vector2 new_pos2 = UpdateGridPositions(
@@ -99,7 +87,7 @@ public class Grid : TileMap {
 					cell_map_target
 				);
 				piece.MoveTo(new_pos3, target_cell_type);
-				((Hole) object_piece).StepIntoCheck(piece);
+				// ((GridPiece) object_piece).StepIntoCheck(piece);
 				return new_pos3;
 			case CellType.Goal:
 				GD.Print("Almost won!");
@@ -109,7 +97,7 @@ public class Grid : TileMap {
 					cell_map_target
 				);
 				piece.MoveTo(new_pos4, target_cell_type);
-				((Goal) object_piece).StepIntoCheck(piece);
+				// ((Goal) object_piece).StepIntoCheck(piece);
 				return new_pos4;
 			default:
 				GD.Print("Whatever the hell this is");

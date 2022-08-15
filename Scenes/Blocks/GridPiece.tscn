@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://Scenes/Blocks/Box.cs" type="Script" id=1]
+[ext_resource path="res://Scenes/Share/GridPiece.cs" type="Script" id=1]
 [ext_resource path="res://Textures/Eye_Levels/64x64/kenney-nl_tileset_legacy.png" type="Texture" id=2]
 [ext_resource path="res://Textures/Eye_Levels/64x64/floor_ladder.png" type="Texture" id=3]
 
