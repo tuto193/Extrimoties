@@ -36,8 +36,7 @@ public class GridPiece : AnimatedSprite {
 
 	public virtual CellType Cell_Type {
 		get {return _cell_type;}
-		set { GD.Print($"Changing value to {value}");
-			_cell_type = value;}
+		set {_cell_type = value;}
 	}
 
 
@@ -47,7 +46,7 @@ public class GridPiece : AnimatedSprite {
 	// }
 
 	public void ReInitialize(CellType ct) {
-		GD.Print("In ReInitialize()");
+		// GD.Print("In ReInitialize()");
 		Cell_Type = ct;
 		// Animation = $"{StringFromCellType(_cell_type).ToLower()}_idle";
 	}
@@ -135,9 +134,6 @@ public class GridPiece : AnimatedSprite {
 	}
 
 	public virtual async void PlayFallInHole() {
-		SceneTreeTween tween = GetTree()
-			.CreateTween()
-			.SetTrans(Tween.TransitionType.Sine)
-			.SetEase(Tween.EaseType.Out);
+
 	}
 }

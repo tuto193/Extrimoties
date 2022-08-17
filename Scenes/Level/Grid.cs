@@ -10,7 +10,7 @@ public class Grid : TileMap {
 			// Box, Goal, Hole, Wall
 			int cell_type = GetCellv(cell_pos);
 			String tile_name = TileSet.TileGetName(cell_type).ToUpper();
-			GD.Print($"Cell {cell_pos} is of TileSet type {tile_name}");
+			// GD.Print($"Cell {cell_pos} is of TileSet type {tile_name}");
 			// Need to instance the actual scenes, add them as children, set the cell to the actual type
 			// Just initializing. Overwrite this value
 			CellType expected_type = GridPiece.CellTypeFromString(tile_name);
@@ -20,7 +20,7 @@ public class Grid : TileMap {
 			AddChild(gp);
 			// gp.ReInitialize(expected_type);
 			// Don't need to set this, since it's already done below
-			GD.Print($"Cell {cell_pos} will be set to {GridPiece.StringFromCellType(gp.Cell_Type)}, expected type was {expected_type}");
+			// GD.Print($"Cell {cell_pos} will be set to {GridPiece.StringFromCellType(gp.Cell_Type)}, expected type was {expected_type}");
 			SetCellv(cell_pos, (int) gp.Cell_Type);
 
 		}
@@ -48,7 +48,7 @@ public class Grid : TileMap {
 
 		switch (target_cell_type) {
 			case CellType.Box:
-				GD.Print("OMG, a Box!");
+				// GD.Print("OMG, a Box!");
 				if (piece.Cell_Type == CellType.Box) {
 					GD.Print("Cell {} already contains a box. Cannot push two at a time", cell_map_target);
 					return piece.Position;
@@ -80,7 +80,7 @@ public class Grid : TileMap {
 				piece.MoveTo(new_pos2);
 				return new_pos2;
 			case CellType.Hole:
-				GD.Print("aAaAaAaAaAaA");
+				// GD.Print("aAaAaAaAaAaA");
 				Vector2 new_pos3 = UpdateGridPositions(
 					piece,
 					cell_map_start,
@@ -90,7 +90,7 @@ public class Grid : TileMap {
 				// ((GridPiece) object_piece).StepIntoCheck(piece);
 				return new_pos3;
 			case CellType.Goal:
-				GD.Print("Almost won!");
+				// GD.Print("Almost won!");
 				Vector2 new_pos4 = UpdateGridPositions(
 					piece,
 					cell_map_start,
