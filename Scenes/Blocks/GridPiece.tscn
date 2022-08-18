@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scenes/Share/GridPiece.cs" type="Script" id=1]
 [ext_resource path="res://Textures/Eye_Levels/64x64/kenney-nl_tileset_legacy.png" type="Texture" id=2]
@@ -51,8 +51,34 @@ animations = [ {
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 32, 32 )
 
+[sub_resource type="Animation" id=8]
+resource_name = "Fall"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 360.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 4, 4 ), Vector2( 2, 2 ) ]
+}
+
 [node name="GridPiece" type="AnimatedSprite"]
-position = Vector2( 0, 4.76837e-07 )
 frames = SubResource( 3 )
 animation = "empty_idle"
 centered = false
@@ -65,3 +91,4 @@ position = Vector2( 32, 32 )
 shape = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Fall = SubResource( 8 )

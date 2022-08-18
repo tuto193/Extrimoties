@@ -30,7 +30,7 @@ public class GridPiece : AnimatedSprite {
 	protected delegate void FinishedMoving();
 
 	[Signal]
-	protected delegate void FallInHole();
+	public delegate void FallInHole();
 
 	private CellType _cell_type = CellType.Empty;
 
@@ -56,6 +56,7 @@ public class GridPiece : AnimatedSprite {
 		this._animation_player = GetNode<AnimationPlayer>("AnimationPlayer");
 		Animation = $"{StringFromCellType(Cell_Type).ToLower()}_idle";
 	}
+
 
 	public static CellType CellTypeFromString(String ct) {
 		switch (ct.ToUpper()) {
@@ -103,29 +104,26 @@ public class GridPiece : AnimatedSprite {
 			.SetTrans(Tween.TransitionType.Sine)
 			.SetEase(Tween.EaseType.Out);
 		_tween.TweenProperty(this, "position", new_pos, _time_animation);
-		// bool _unused = _tween.InterpolateProperty(
-		// 	this,
-		// 	"Position",
-		// 	Position,
-		// 	new_pos,
-		// 	_time_animation,
-		// 	Tween.TransitionType.Sine,
-		// 	Tween.EaseType.Out
-		// );
-		// _unused = _tween.Start();
 		await ToSignal(_tween, "finished");
 		this.IsStandingOn = np_type;
 		SetProcess(true);
 		EmitSignal(nameof(FinishedMoving));
 	}
 
-	public bool EnterHole(GridPiece h) {
-		this.IsStandingOn = h.Cell_Type;
-		if (IsStandingOn == CellType.Hole) {
-			EmitSignal(nameof(FallInHole));
-			return true;
+	public async void EnterHole() {
+		this.IsStandingOn = CellType.Hole;
+		// if (IsStandingOn == CellType.Hole) {
+		SetProcess(false);
+		if (_animation_player == null) {
+			GD.Print("Re-initializing AnimPlay");
+			_animation_player = GetNode<AnimationPlayer>("AnimationPlayer");
 		}
-		return false;
+		this._animation_player.Play("Fall");
+		await ToSignal(this._animation_player, "animation_finished");
+
+		SetProcess(true);
+		EmitSignal(nameof(FallInHole));
+		// }
 	}
 
 	public bool ExitHole(GridPiece h) {
@@ -133,7 +131,4 @@ public class GridPiece : AnimatedSprite {
 		return false;
 	}
 
-	public virtual async void PlayFallInHole() {
-
-	}
 }

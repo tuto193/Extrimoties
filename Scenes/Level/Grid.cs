@@ -4,6 +4,7 @@ using static GridTraits;
 using static GridPiece;
 
 public class Grid : TileMap {
+	private Godot.Collections.Array able_to_fall_pieces = new Godot.Collections.Array {CellType.Life, CellType.Box};
 	private PackedScene grid_piece = GD.Load<PackedScene>("res://Scenes/Blocks/GridPiece.tscn");
 	public override void _Ready() {
 		foreach(Vector2 cell_pos in GetUsedCells()) {
@@ -17,17 +18,16 @@ public class Grid : TileMap {
 			GridPiece gp = grid_piece.Instance<GridPiece>();
 			gp.ReInitialize(expected_type);
 			gp.Position = MapToWorld(cell_pos) * Scale;
+			// gp.ReInitialize(expected_type);
+			gp.InitialPosition = gp.Position;
 			AddChild(gp);
 			// gp.ReInitialize(expected_type);
-			// Don't need to set this, since it's already done below
-			// GD.Print($"Cell {cell_pos} will be set to {GridPiece.StringFromCellType(gp.Cell_Type)}, expected type was {expected_type}");
+			// Initialize the TileMap stuff
 			SetCellv(cell_pos, (int) gp.Cell_Type);
-
-		}
-		// Initialize the children last, so they don't intervene with tiled values
-		foreach (GridPiece child in GetChildren()) {
-			// String celltype = TileSet.TileGetName(GetCellv(WorldToMap(child.Position)));
-			SetCellv(WorldToMap(child.Position), ((int) child.Cell_Type));
+			// Make sure that all CellTypes that can fall, are added to this
+			if (able_to_fall_pieces.Contains(gp.Cell_Type) ) {
+				gp.Connect(nameof(FallInHole), this, nameof(OnGridPieceFallInHole), new Godot.Collections.Array {gp});
+			}
 		}
 	}
 
@@ -80,14 +80,15 @@ public class Grid : TileMap {
 				piece.MoveTo(new_pos2);
 				return new_pos2;
 			case CellType.Hole:
-				// GD.Print("aAaAaAaAaAaA");
+				GD.Print("aAaAaAaAaAaA");
 				Vector2 new_pos3 = UpdateGridPositions(
 					piece,
 					cell_map_start,
 					cell_map_target
 				);
 				piece.MoveTo(new_pos3, target_cell_type);
-				// ((GridPiece) object_piece).StepIntoCheck(piece);
+				// object_piece).StepIntoCheck(piece);
+				piece.EnterHole();
 				return new_pos3;
 			case CellType.Goal:
 				// GD.Print("Almost won!");
@@ -121,8 +122,9 @@ public class Grid : TileMap {
 		return MapToWorld(cell_map_target) + CellSize / 2;
 	}
 
-	public void RespawnPieceAt(GridPiece gp) {
-
-		UpdateGridPositions(gp, WorldToMap(gp.Position), WorldToMap(gp.InitialPosition));
+	// ReSpawn the Grid piece
+	public void OnGridPieceFallInHole(GridPiece gp) {
+		Vector2 _init_pos = UpdateGridPositions(gp, WorldToMap(gp.Position), WorldToMap(gp.InitialPosition));
+		gp.MoveTo(gp.InitialPosition);
 	}
 }
